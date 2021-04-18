@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script> -->
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+    
+    <style>
+        table{
+            background-color: white;
+            width: 70% ;
+        }
+        tr:nth-child(odd) {
+          background-color: #000000	;
+        }
+        tr:nth-child(even) {
+          background-color: #696969;
+        }
+        @media screen and (min-width: 1025px){
+            body{
+                background : url(desktop.jpeg) no-repeat #000000;
+                background-size : cover;
+                background-attachment: fixed;
+            }
+            .container{
+                background: transparent;
+                border:5px solid gray;
+                width:70%;
+                border-radius: 10px;
+            }
+            .row{
+                margin: 2%;
+            }
+        }
+        @media screen and (max-width: 1024px){
+            h1,label{
+                color: white;
+            }
+            .modal label{
+                color: black;
+            }
+            table{
+                font-size: 10px;
+            }
+            body{
+                background : url(ipad.jpeg) no-repeat;
+                background-size: cover;
+                background-attachment: fixed;
+            }
+            .container{
+                border:none;
+                width:80%;
+                height: 75vh;
+                margin-left:10%;
+                margin-top: 5%;
+                border-radius: 10px;
+                box-shadow: 0px 0px 50px 0px #000;
+            }
+            h6{
+                color:gold;    
+            }
+        }
+        @media screen and (max-width: 576px){
+            h1,label{
+                color: white;
+            }
+            body{
+                background : url(phones.jpeg) no-repeat;
+                background-size: cover;
+                background-attachment: fixed;
+            }
+            .container{
+                box-shadow: none;
+            }
+            h6{
+                columns: #ff2266;
+            }
+        }
+
+        
+        .modal-bg{
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5;
+        }
+        .bg-active{
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal{
+            position: relative;
+            font-family: 'Montserrat',sans-serif;
+            background-color: white;
+            width: 50%;
+            height: 70%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-direction: column;
+        }
+        .modal button{
+            padding: 10px 30px;
+            background-color: #2980b9;
+            color:white;
+            border: none;
+            font-family: 'Montserrat',sans-serif;
+            cursor: pointer;
+        }
+        .modal-close{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="justify-content: space-around;">
+            <div class="col-6">
+                <center>
+                    <h1>Register Here</h1>
+                </center>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <center>
+                    <label for="username" style="border:none;font-weight: 1000;">Username</label>
+                </center>
+            </div>
+            <div class="col-6">
+                <input type="text" id="username" placeholder="Enter a username" class="form-control" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <center>
+                    <label for="rolno" style="border:none;font-weight: 1000;">RollNo</label>
+                </center>
+            </div>
+            <div class="col-6">
+                <input type="text" id="rolno" placeholder="Enter your RollNo" class="form-control" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <center>
+                    <label for="email" style="border:none;font-weight: 1000;">E-mail</label>
+                </center>
+            </div>
+            <div class="col-6">
+                <input type="email" id="email" class="form-control" placeholder="Enter your e-mail" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <center>
+                    <label for="mobile" style="border:none;font-weight: 1000;">Mobile Number</label>
+                </center>
+            </div>
+            <div class="col-6">
+                <input type="number" id="mobile" class="form-control" placeholder="Enter your Mobile Number" required>
+            </div>
+        </div>
+        <div class="row" style="justify-content: space-around;">
+            <div class="col-6">
+                <button onClick="insertUser()" class="btn form-control btn-warning text-dark" style="font-size:large;font-weight: 1000;">Insert</button>
+            </div>
+        </div>
+        <div class="row" style="justify-content: space-around;">
+            <div class="col-6">
+                <button onClick="deleteUser()" class="form-control bg-danger text-dark" style="font-weight: 1000;">Delete</button>
+            </div>
+        </div>
+        <div class="row" style="justify-content: space-around;">
+            <div class="col-6">
+                <button onClick="readUsers()" class="form-control bg-primary text-white" style="font-weight: 1000;">load users ... </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="table">
+                <div id="display" style="float: right;visibility: hidden;">
+                    <button align="right" onclick="removeTable()"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                </div>
+                <div id="list">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-bg">
+        <div class="modal" style="background-color: white;">
+            <h2>Update Profile</h2>
+            <label for="name">Username : </label>
+            <input type="text" id="usernameUpdate">
+            <label for="email">Email : </label>
+            <input type="email" id="emailUpdate">
+            <label for="name">Mobile : </label>
+            <input type="number" id="mobileUpdate">
+            <label for="email">RollNo : </label>
+            <input type="email" id="rolnoUpdate">
+            <button onclick="updateProfile()">Update Profile</button>
+            <span class="modal-close">X</span>
+        </div>
+    </div>
+
+    <script src="script.js"  type="text/javascript"></script>
+    
+</body>
+</html>
